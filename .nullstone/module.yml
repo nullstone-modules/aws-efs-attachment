@@ -1,0 +1,14 @@
+org_name: nullstone
+name: aws-efs-attachment
+friendly_name: EFS (Elastic File System) Attachment
+description: Attach an EFS (Elastic File System) to an application.
+category: capability
+subcategory: datastores
+provider_types:
+    - aws
+platform: efs
+subplatform: ""
+type: ""
+appCategories:
+    - container
+is_public: true

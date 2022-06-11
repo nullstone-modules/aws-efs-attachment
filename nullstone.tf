@@ -6,24 +6,19 @@ terraform {
   }
 }
 
-variable "app_metadata" {
-  description = <<EOF
-App Metadata is injected from the app on-the-fly.
-This contains information about resources created in the app module that are needed by the capability.
-EOF
-
-  type    = map(string)
-  default = {}
-}
-
 data "ns_workspace" "this" {}
 
-data "ns_connection" "efs" {
-  name = "efs"
-  type = "efs/aws"
+// Generate a random suffix to ensure uniqueness of resources
+resource "random_string" "resource_suffix" {
+  length  = 5
+  lower   = true
+  upper   = false
+  numeric = false
+  special = false
 }
 
 locals {
-  fs_id                = data.ns_connection.efs.outputs.efs_id
-  fs_security_group_id = data.ns_connection.efs.outputs.security_group_id
+  tags          = data.ns_workspace.this.tags
+  block_name    = data.ns_workspace.this.block_name
+  resource_name = "${data.ns_workspace.this.block_ref}-${random_string.resource_suffix.result}"
 }
